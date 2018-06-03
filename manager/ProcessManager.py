@@ -33,6 +33,7 @@ class ProcessManager(Thread):
                           creationflags=CREATE_NO_WINDOW)
         self.proc_name = proc_name
         self.daemon = True
+        log(proc_args, LEVEL_INFO, self.proc_name)
         log("[%s] started" % proc_name, LEVEL_INFO, self.proc_name)
     
     def run(self):
@@ -80,7 +81,7 @@ class SumokoindManager(ProcessManager):
         if "--testnet" in sys.argv[1:]:
             testnet_flag = '--testnet'
         else:
-            testnet_flag = ''
+            testnet_flag = '--'
 
         proc_args = u'%s/bin/ryod --log-level %d --block-sync-size %d %s' % (resources_path, log_level, block_sync_size, testnet_flag)
         ProcessManager.__init__(self, proc_args, "ryod")
@@ -112,7 +113,7 @@ class WalletCliManager(ProcessManager):
         if "--testnet" in sys.argv[1:]:
             testnet_flag = '--testnet'
         else:
-            testnet_flag = ''
+            testnet_flag = '--'
 
         if not restore_wallet:
             wallet_args = u'%s/bin/ryo-wallet-cli --generate-new-wallet=%s --log-file=%s %s' \
@@ -173,8 +174,8 @@ class WalletRPCManager(ProcessManager):
             testnet_flag = '--testnet'
             rpc_bind_port = 29736
         else:
-            testnet_flag = ''
-            rpc_bind_port = 9736
+            testnet_flag = '--'
+            rpc_bind_port = 19736
             
         wallet_rpc_args = u'%s/bin/ryo-wallet-rpc --wallet-file %s --log-file %s --rpc-bind-port %d --user-agent %s --log-level %d %s' \
                                             % (resources_path, wallet_file_path, wallet_log_path, rpc_bind_port, self.user_agent, log_level, testnet_flag)
