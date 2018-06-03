@@ -113,7 +113,7 @@ class BaseWebUI(QMainWindow):
         self.view.setZoomFactor(1)
         
         self.setWindowTitle(APP_NAME)
-        self.icon = self._getQIcon('sumokoin_icon_64.png')
+        self.icon = self._getQIcon('ryo_icon_64.png')
         self.setWindowIcon(self.icon)
         
         self.setCentralWidget(self.view)
@@ -188,11 +188,11 @@ class MainWebUI(BaseWebUI):
         
         # Setup the system tray icon
         if sys.platform == 'darwin':
-            tray_icon = 'sumokoin_16x16_mac.png'
+            tray_icon = 'ryo_16x16_mac.png'
         elif sys.platform == "win32":
-            tray_icon = 'sumokoin_16x16.png'
+            tray_icon = 'ryo_16x16.png'
         else:
-            tray_icon = 'sumokoin_32x32_ubuntu.png'
+            tray_icon = 'ryo_32x32_ubuntu.png'
         
         self.trayIcon = QSystemTrayIcon(self._getQIcon(tray_icon))
         self.trayIcon.setToolTip(tray_icon_tooltip)
@@ -513,7 +513,7 @@ class MainWebUI(BaseWebUI):
         
     def about(self):
         QMessageBox.about(self, "About", \
-            u"%s <br><br>Copyright© 2017 -2018 - Sumokoin Projects (www.sumokoin.org)" % self.agent)
+            u"%s <br><br>Copyright© 2018 Ryo Currency (ryo-currency.com)<br><br>Copyright© 2017 - 2018 Sumokoin Projects (www.sumokoin.org)" % self.agent)
     
     def _load_wallet(self):
         if self.wallet_info.load():
