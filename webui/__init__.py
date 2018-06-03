@@ -64,9 +64,6 @@ log_text_tmpl = """
 </index>
 """
 
-dark_theme_qss = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__), "dark-theme.qss"))
-
 class LogViewer(QMainWindow):
     def __init__(self, parent, log_file):
         QMainWindow.__init__(self, parent)
@@ -251,6 +248,10 @@ class MainWebUI(BaseWebUI):
         self.trayIcon.show()
 
         # Toggle QT dark mode
+        self.resources_path = self.app.property("ResPath")
+        self.dark_theme_qss = os.path.realpath(
+            os.path.join(self.resources_path, "qt", "dark-theme.qss"))
+        
         self.toggleDarkQT()
 
         
@@ -615,7 +616,7 @@ class MainWebUI(BaseWebUI):
 
     def toggleDarkQT(self):
         if self.app_settings.settings['gui']['dark_mode']:
-            with open(dark_theme_qss,"r") as fh:
+            with open(self.dark_theme_qss,"r") as fh:
                 self.app.setStyleSheet(fh.read())
         else:
             self.app.setStyleSheet("")
