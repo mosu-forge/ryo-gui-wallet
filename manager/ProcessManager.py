@@ -76,14 +76,14 @@ class ProcessManager(Thread):
     
 
 class SumokoindManager(ProcessManager):
-    def __init__(self, resources_path, log_level=1, block_sync_size=10):
+    def __init__(self, resources_path, log_level=0, block_sync_size=10):
 
         if "--testnet" in sys.argv[1:]:
             testnet_flag = '--testnet'
         else:
             testnet_flag = '--'
 
-        proc_args = u'%s/bin/ryod --log-level %d --block-sync-size %d %s' % (resources_path, log_level, block_sync_size, testnet_flag)
+        proc_args = u'%s/bin/ryod --add-priority-node 185.134.22.134 --log-level %d --block-sync-size %d %s' % (resources_path, log_level, block_sync_size, testnet_flag)
         ProcessManager.__init__(self, proc_args, "ryod")
         self.synced = Event()
         self.stopped = Event()
