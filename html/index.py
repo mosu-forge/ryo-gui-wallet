@@ -1159,7 +1159,7 @@ html ="""
         <script id="recent_tx_row_templ" type="x-tmpl-mustache">
             <div class="col-sm-12">
                 <div class="col-xs-10" style="padding-right:0">
-                    <p class="tx-list tx-{{cls_in_out}}"><i class="fa fa-{{ tx_fa_icon }}"></i> ({{tx_direction}}) <span class="tx-list txid"><a href="javascript:open_link('https://explorer.ryo-currency.com/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span></p>
+                    <p class="tx-list tx-{{cls_in_out}}"><i class="fa fa-{{ tx_fa_icon }}"></i> ({{tx_direction}}) <span class="tx-list txid"><a href="javascript:open_link('http://explorer.ryo-currency.com/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span></p>
                     Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span><br/>
                     Height: <span class="tx-list tx-height">{{ tx_height }}</span>  Date: <span class="tx-list tx-date">{{ tx_date }}</span> Time: <span class="tx-list tx-time">{{ tx_time }}</span> Status: <span class="tx-list tx-status">{{ tx_status }}</span><br/>
                     <p style="font-size:140%">Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}</span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}</span></p> 
@@ -1173,7 +1173,7 @@ html ="""
         
         <script id="tx_detail_templ" type="x-tmpl-mustache">
             <p class="tx-list tx-{{cls_in_out}}" style="font-size: 90%"><i class="fa fa-{{ tx_fa_icon }}"></i> {{tx_direction}}<br>
-                <span class="tx-list txid"><a href="javascript:open_link('https://explorer.ryo-currency.com/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span>
+                <span class="tx-list txid"><a href="javascript:open_link('http://explorer.ryo-currency.com/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span>
             </p>
             <ul style="font-size: 90%">
                 <li>Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span></li>
