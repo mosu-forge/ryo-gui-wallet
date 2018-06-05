@@ -295,8 +295,10 @@ html ="""
                 setTimeout(function(){
                     var status = $.parseJSON(status_json);
                     var daemon_status = status['status'];
-                    var is_ready = status['is_ready'];
                     var current_height = status['current_height'];
+                    var wallet_height = status['wallet_height']
+                    var is_ready = status['is_ready'] && current_height >= 137510 && wallet_height == current_height;
+
                     var status_text = "Network: " + daemon_status;
                     if(daemon_status == "Connected"){
                         if(is_ready){
