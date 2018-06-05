@@ -297,7 +297,7 @@ html ="""
                     var daemon_status = status['status'];
                     var current_height = status['current_height'];
                     var wallet_height = status['wallet_height']
-                    var is_ready = status['is_ready'] && current_height >= 137510 && wallet_height == current_height;
+                    is_ready = status['is_ready'] && current_height >= 137510 && wallet_height == current_height;
 
                     var status_text = "Network: " + daemon_status;
                     if(daemon_status == "Connected"){
@@ -387,7 +387,7 @@ html ="""
                         }
                     }
                     
-                    disable_buttons(sync_pct < 100);
+                    disable_buttons(is_ready);
                                         
                     if(current_balance != wallet_info['balance']){
                         balance_span.delay(100).fadeOut(function(){
@@ -722,7 +722,6 @@ html ="""
                 
                 current_tx_history_page = 1;
                 
-                sync_pct = 0;
                 show_app_progress("Loading wallet...");
                 
                 receive_address = $('#receive_address');
