@@ -721,7 +721,8 @@ html ="""
                 current_address = null;
                 
                 current_tx_history_page = 1;
-                
+
+                is_ready = false;
                 show_app_progress("Loading wallet...");
                 
                 receive_address = $('#receive_address');
