@@ -330,6 +330,7 @@ class MainWebUI(BaseWebUI):
         sumokoind_info = self.daemon_rpc_request.get_info()
         if sumokoind_info['status'] == "OK":
             status = "Connected"
+            is_ready = sumokoind_info['is_ready']
             self.current_height = int(sumokoind_info['height'])
             target_height = int(sumokoind_info['target_height'])
             if target_height == 0 or target_height < self.current_height:
@@ -338,10 +339,12 @@ class MainWebUI(BaseWebUI):
                 self.target_height = target_height;
         else:
             status = sumokoind_info['status']
+            is_ready = False
         
         info = {"status": status, 
                 "current_height": self.current_height, 
                 "target_height": self.target_height,
+                "is_ready": is_ready
             }
         
         self.hub.update_daemon_status(json.dumps(info))
