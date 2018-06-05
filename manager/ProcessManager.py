@@ -76,7 +76,7 @@ class ProcessManager(Thread):
     
 
 class SumokoindManager(ProcessManager):
-    def __init__(self, resources_path, log_level=0, block_sync_size=10):
+    def __init__(self, resources_path, log_level=1, block_sync_size=10):
 
         if "--testnet" in sys.argv[1:]:
             testnet_flag = '--testnet'
