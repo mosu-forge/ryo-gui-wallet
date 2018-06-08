@@ -277,7 +277,7 @@ function update_daemon_status(status_json){
         var daemon_status = status['status'];
         var current_height = status['current_height'];
         var wallet_height = status['wallet_height']
-        is_ready = status['is_ready'] && current_height >= 137510 && wallet_height == current_height;
+        is_ready = status['is_ready'] && current_height >= 137510 && wallet_height >= current_height -1;
 
         var status_text = "Network: " + daemon_status;
         if(daemon_status == "Connected"){

@@ -431,7 +431,7 @@ html ="""
                 <div class="col-xs-2">
                     <button class="btn btn-warning" onclick="view_tx_detail('{{ tx_height }}', '{{ tx_id }}')">Details</button>
                 </div>
-                <br clear="both"/><hr style="margin: 0 0 10px"/>
+                <br clear="both"/>
             </div>
         </script>
         
