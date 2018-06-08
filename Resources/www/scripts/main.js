@@ -240,6 +240,10 @@ function app_ready(){
         hide_progress();
     });
     
+    app_hub.on_pop_blocks_completed_event.connect(function(){
+        hide_app_progress();
+    });
+    
     setInterval(function(){
         app_hub.update_wallet_loading_height();
     }, 1000);
@@ -249,7 +253,7 @@ function app_ready(){
         if(height < target_height){
             if($('#app_modal_progress').is(':visible')){
                 msg = "Processing block# " + height;
-                if( target_height > 0 ) msg += "/" + target_height;
+                //if( target_height > 0 ) msg += "/" + target_height;
                 $('#app_modal_progress_subtext').html(msg);
                 $('#app_modal_progress_subtext').show();
             }
@@ -665,6 +669,12 @@ function open_link(link){
 function restart_daemon(){
     show_app_progress("Restarting daemon...");
     app_hub.restart_daemon();
+    return false;
+}
+
+function pop_blocks(){
+    show_app_progress("Popping blocks...");
+    app_hub.pop_blocks();
     return false;
 }
 

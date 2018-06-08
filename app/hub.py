@@ -25,6 +25,7 @@ from utils.common import print_money, print_money2, readFile
                                     
 from settings import APP_NAME, VERSION, DATA_DIR, COIN, makeDir, seed_languages
 from utils.logger import log, LEVEL_ERROR, LEVEL_INFO
+from utils.blockchain import pop_blocks
 
 # from utils.notify import Notify
 # from sys import stderr
@@ -665,6 +666,30 @@ class Hub(QObject):
         self.app_process_events(5)
         self.on_restart_daemon_completed_event.emit()
         
+    @Slot()
+    def pop_blocks(self):
+        while True:
+            no_blocks, result = self._custom_input_dialog(self.ui, \
+                                "Pop Blocks", "Enter number of blocks to pop:",
+                                QLineEdit.Normal, QInputDialog.TextInput, "1000")
+            if result:
+                if not no_blocks.isdigit():
+                    QMessageBox.warning(self.ui, \
+                            "Pop Blocks",\
+                            "Value must contain numbers only")
+                else:
+                    break
+            else:
+                self.on_pop_blocks_completed_event.emit()
+                return False
+
+        self.app_process_events(1)
+        self.ui.sumokoind_daemon_manager.stop()
+        pop_blocks(no_blocks)
+        self.ui.start_deamon()
+        self.app_process_events(5)
+        self.on_pop_blocks_completed_event.emit()
+        
     
     @Slot()
     def view_daemon_log(self):
@@ -721,14 +746,16 @@ class Hub(QObject):
     
     def _custom_input_dialog(self, ui, title, label, 
                              text_echo_mode=QLineEdit.Normal, 
-                             input_mode=QInputDialog.TextInput):
-        dlg = QInputDialog(ui)                 
+                             input_mode=QInputDialog.TextInput,
+                             default_value=''):
+        dlg = QInputDialog(ui)
         dlg.setTextEchoMode(text_echo_mode)
         dlg.setInputMode(input_mode)
         dlg.setWindowTitle(title)
-        dlg.setLabelText(label)                        
-        dlg.resize(250, 100)                
-        result = dlg.exec_()                             
+        dlg.setTextValue(default_value)
+        dlg.setLabelText(label)
+        dlg.resize(250, 100)
+        result = dlg.exec_()
         text = dlg.textValue()
         return (text, result)
     
@@ -772,6 +799,7 @@ class Hub(QObject):
     on_load_app_settings_completed_event = Signal(str)
     on_quick_load_ui_settings_completed_event = Signal(str)
     on_restart_daemon_completed_event = Signal()
+    on_pop_blocks_completed_event = Signal()
     on_paste_seed_words_event = Signal(str)
     on_update_wallet_loading_height_event = Signal(int, int)
     

@@ -343,6 +343,7 @@ html ="""
                                 </form>
                             </div>
                             <div class="col-sm-12 wallet-settings" style="margin-top: 10px; text-align:center;">
+                                <button id="btn_pop_blocks" type="button" class="btn btn-primary" onclick="pop_blocks()"><i class="fa fa-square"></i> Pop Blocks</button>
                                 <button id="btn_restart_daemon" type="button" class="btn btn-primary" onclick="restart_daemon()"><i class="fa fa-refresh"></i> Restart Daemon</button>
                                 <button id="btn_view_log" type="button" class="btn btn-primary" onclick="app_hub.view_daemon_log()"><i class="fa fa-file"></i> View Log...</button>
                             </div>
