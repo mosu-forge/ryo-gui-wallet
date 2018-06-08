@@ -30,13 +30,14 @@ def pop_blocks(num=1000):
                       creationflags=CREATE_NO_WINDOW)
 
     proc_name = 'ryo-blockchain-import'
-    log(args, LEVEL_INFO, proc_name)
-    log("[%s] started" % proc_name, LEVEL_INFO, proc_name)
-    
+    log("[%s] %s" % (proc_name, args), LEVEL_INFO, proc_name)
+
+    sleep(0.1)
+
     for line in iter(proc.stdout.readline, b''):
         log(">>> " + line.rstrip(), LEVEL_DEBUG, proc_name)
         
     if not proc.stdout.closed:
         proc.stdout.close()
 
-    
+    return False
