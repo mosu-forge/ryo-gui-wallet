@@ -540,7 +540,9 @@ class MainWebUI(BaseWebUI):
                             "Wallet Password", "Enter wallet password:", \
                             QLineEdit.Password)
 
-                if not result or not wallet_password:
+                if not result:
+                    wallet_password = None
+                elif not wallet_password:
                     wallet_password = ''
 
                 break
