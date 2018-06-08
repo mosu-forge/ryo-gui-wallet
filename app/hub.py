@@ -36,7 +36,7 @@ from manager.ProcessManager import WalletCliManager
 wallet_dir_path = os.path.join(DATA_DIR, 'wallets')
 makeDir(wallet_dir_path)
         
-password_regex = re.compile(r"^([a-zA-Z0-9!@#\$%\^&\*]{1,256})$")
+#password_regex = re.compile(r"^([a-zA-Z0-9_\-!@#\$%\^&\*]{0,256})$")
 
 from webui import LogViewer
 
@@ -95,7 +95,7 @@ class Hub(QObject):
             wallet_password, result = self._custom_input_dialog(self.new_wallet_ui, \
                 "Wallet Password", "Enter password of the imported wallet:", QLineEdit.Password)
             if result:
-                if not wallet_password:
+                if wallet_password is None:
                     QMessageBox.warning(self.new_wallet_ui, \
                             'Wallet Password',\
                              "You must provide password to open the imported wallet")
@@ -181,11 +181,10 @@ class Hub(QObject):
                 wallet_password, result = self._custom_input_dialog(self.new_wallet_ui, \
                         "Wallet Password", "Set wallet password:", QLineEdit.Password)
                 if result:
-                    if not password_regex.match(wallet_password):
+                    if not all(ord(char) < 128 for char in wallet_password):
                         QMessageBox.warning(self.new_wallet_ui, \
                             'Wallet Password',\
-                             "Password must contain at least 1 character [a-zA-Z] or number [0-9]\
-                                        <br>or special character like !@#$%^&* and not contain spaces")
+                                        "Password must contain only ASCII characters")
                         continue
                     
                     confirm_password, result = self._custom_input_dialog(self.new_wallet_ui, \
@@ -377,15 +376,19 @@ class Hub(QObject):
             if result == QMessageBox.No:
                 self.on_wallet_send_tx_completed_event.emit('{"status": "CANCELLED", "message": "Sending coin cancelled"}')
                 return
-            
-        wallet_password, result = self._custom_input_dialog(self.ui, \
+
+        if self.ui.wallet_info.wallet_password:
+            wallet_password, result = self._custom_input_dialog(self.ui, \
                         "Wallet Password", "Please enter wallet password:", QLineEdit.Password)
+        else:
+            wallet_password = ''
+            result = True
         
         if not result:
             self.on_wallet_send_tx_completed_event.emit('{"status": "CANCELLED", "message": "Wrong wallet password"}');
             return
         
-        if hashlib.sha256(wallet_password).hexdigest() != self.ui.wallet_info.wallet_password:
+        if self.ui.wallet_info.wallet_password and hashlib.sha256(wallet_password).hexdigest() != self.ui.wallet_info.wallet_password:
             self.on_wallet_send_tx_completed_event.emit('{"status": "CANCELLED", "message": "Wrong wallet password"}');
             QMessageBox.warning(self.ui, "Incorrect Wallet Password", "Wallet password is not correct!")
             return
@@ -579,12 +582,17 @@ class Hub(QObject):
         if result == QMessageBox.No:
             return
         
-        wallet_password, result = self._custom_input_dialog(self.ui, \
+        if self.ui.wallet_info.wallet_password:
+            wallet_password, result = self._custom_input_dialog(self.ui, \
                         "Wallet Password", "Please enter wallet password:", QLineEdit.Password)
+        else:
+            wallet_password = ''
+            result = True
+
         if not result:
             return
         
-        if hashlib.sha256(wallet_password).hexdigest() != self.ui.wallet_info.wallet_password:
+        if self.ui.wallet_info.wallet_password and hashlib.sha256(wallet_password).hexdigest() != self.ui.wallet_info.wallet_password:
             QMessageBox.warning(self.ui, "Incorrect Wallet Password", "Wallet password is not correct!")
             return
         
@@ -593,13 +601,18 @@ class Hub(QObject):
     
     @Slot(str)
     def view_wallet_key(self, key_type):
-        wallet_password, result = self._custom_input_dialog(self.ui, \
+        if self.ui.wallet_info.wallet_password:
+            wallet_password, result = self._custom_input_dialog(self.ui, \
                         "Wallet Password", "Please enter wallet password:", QLineEdit.Password)
+        else:
+            wallet_password = ''
+            result = True
+
         if not result:
             self.on_view_wallet_key_completed_event.emit("", "");
             return
         
-        if hashlib.sha256(wallet_password).hexdigest() != self.ui.wallet_info.wallet_password:
+        if self.ui.wallet_info.wallet_password and hashlib.sha256(wallet_password).hexdigest() != self.ui.wallet_info.wallet_password:
             self.on_view_wallet_key_completed_event.emit("", "");
             QMessageBox.warning(self.ui, "Incorrect Wallet Password", "Wallet password is not correct!")
             return
